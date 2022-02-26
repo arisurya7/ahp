@@ -1,0 +1,319 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'ahp/stylesmain.html' %}
+    <style>
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+        }
+
+        .swal-text {
+            text-align: center;
+        }
+    </style>
+    <title>RFM | Weighting</title>
+</head>
+
+<body style="background-color: rgb(241, 250, 252);">
+
+    {% include 'ahp/navbar.html' %}
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+
+                {% if messages %}
+                {% for message in messages %}
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                {%ifnotequal message|stringformat:"s" "success" %}
+                <script>
+                    swal("Gagal!",
+                        "Bobot yang anda berikan belum konsisten. Hasil perhitungan Consistency Ratio > 0.1, Silahkan lihat contoh dan info lalu ulangi mengisi",
+                        "warning");
+                </script>
+                {%endifnotequal %}
+                {% endfor %}
+
+                {% endif %}
+            </div>
+            <div class="row mb-5 mt-5 d-flex justify-content-center">
+                <div class="col-md-7">
+                    <div class="card" style="border-radius:1rem;" data-aos="fade-left">
+                        <div class="card-body">
+                            <h1 class="mb-3 mt-3 text-center">Weight RFM</h1>
+
+                            <div class="d-grid d-md-flex justify-content-md-center mb-5">
+                                <button class="btn btn-outline-success  rounded-pill" type="button"
+                                    style="padding-left: 2rem; padding-right: 2rem; margin-right: 1rem;"
+                                    data-bs-toggle="modal" data-bs-target="#contoh">Contoh</button>
+                                <button class="btn btn-outline-info  rounded-pill" type="button"
+                                    style="padding-left: 2rem; padding-right: 2rem;" data-bs-toggle="modal"
+                                    data-bs-target="#info">Info</button>
+                            </div>
+
+                            <form action="{% url 'weighting:rfm'%}" class="form-inline" method="post">
+                                {% csrf_token %}
+                                <div class="row mb-2">
+                                    <div class="col d-flex justify-content-end">
+                                        <input type="hidden" name="id_weight" value="{{ id_weight }}">
+                                        <div class="form-group">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="input1" id="fr"
+                                                    value="10" required>
+                                                <label class="form-check-label" for="fr">Frequency</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <label class="form-check-label" for="rf">Recency</label>
+                                                <input class="form-check-input" type="radio" name="input1" id="rf"
+                                                    value="01" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex justify-content-start">
+                                        <div class="form-group">
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="score1" required>
+                                                <option value="" selected>Pilih Skor</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col d-flex justify-content-end">
+                                        <div class="form-group">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="input2" value="20"
+                                                    id="mr" required>
+                                                <label class="form-check-label" for="mr">Monetary</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <label class="form-check-label" for="rm">Recency</label>
+                                                <input class="form-check-input" type="radio" name="input2" value="02"
+                                                    id="rm" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex justify-content-start">
+                                        <div class="form-group">
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="score2" required>
+                                                <option value="" selected>Pilih Skor</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col d-flex justify-content-end">
+                                        <div class="form-group">
+                                            <div class="form-check form-check-inline">
+                                                <label class="form-check-label" for="mf">Monetary</label>
+                                                <input class="form-check-input" type="radio" name="input3" value="21"
+                                                    id="mf" required>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="input3" value="12"
+                                                    id="fm" required>
+                                                <label class="form-check-label" for="fm">Frequency</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex justify-content-start">
+                                        <div class="form-group">
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="score3" required>
+                                                <option value="" selected>Pilih Skor</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid d-md-flex justify-content-md-end mt-5 mb-3">
+                                    {% if responden %}
+                                    <button class="btn btn-primary btn-lg rounded-pill" type="submit"
+                                        style="padding-left: 2rem; padding-right: 2rem;">Lanjutkan</button>
+                                    {% else %}
+                                    <button class="btn btn-primary btn-lg rounded-pill" type="submit"
+                                        style="padding-left: 2rem; padding-right: 2rem;" disabled>Lanjutkan</button>
+                                    {% endif %}
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<!-- Modal Contoh -->
+<div class="modal fade" id="contoh" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Contoh</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <p class="ms-5">Referensi 1:</p>
+                    <div class="col d-flex justify-content-center">
+                        <img src="{%static 'weighting/img/ahp_rfm_rev1.jpg'%}" alt="" style="width: 25rem;">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <p class="ms-5">Referensi 2:</p>
+                    <div class="col d-flex justify-content-center">
+                        <img src="{%static 'weighting/img/ahp_rfm_rev2.jpg'%}" alt="" style="width: 25rem;">
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Info -->
+<div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Informasi Panduan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row m-2">
+                    <div class="col">
+                        <h4>Penjelasan Atribut Variabel</h4>
+                        <ul>
+                            <li>
+                                <strong>Recency : </strong>
+                                <p>Jarak dari waktu transaksi terakhir kali dilakukan
+                                    dengan waktu saat ini.</p>
+                            </li>
+                            <li>
+                                <strong>Frequency : </strong>
+                                <p>Total jumlah transaksi yang dilakukan selama
+                                    periode tertentu.</p>
+                            </li>
+                            <li>
+                                <strong>Monetary : </strong>
+                                <p>Total nilai produk dalam bentuk uang yang
+                                    diberikan pelanggan pada perusahaan.</p>
+                            </li>
+                        </ul>
+                        <h4 class="mt-4">Skor Penilaian</h4>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Skor</th>
+                                    <th>Tingkat Preferensi</th>
+                                    <th>Penjelasan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Sama Pentingnya</td>
+                                    <td>Kedua kriteria memiliki pengaruh yang sama.</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Sedikit Lebih Penting</td>
+                                    <td>Penilaian dan pengalaman sedikit memihak pada salah satu kriteria tertentu
+                                        dibanding kriteria pasangannya.</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Lebih Penting</td>
+                                    <td>Penilaian dan pengalaman memihak
+                                        pada salah satu kriteria tertentu
+                                        disbanding kriteria pasangannya.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>Jelas Lebih Penting</td>
+                                    <td>Salah satu kriteria lebih
+                                        diprioritaskan dan relatif lebih
+                                        penting dibandingkan kriteria
+                                        pasangannya.</td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>Mutlak Sangat Penting</td>
+                                    <td>Salah satu kriteria sangat jelas lebih
+                                        penting dibandingkan kriteria
+                                        pasangannya.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2,4,6,8</td>
+                                    <td></td>
+                                    <td>Diberikan bila ada keraguan
+                                        penilaian diantara dua tingkat
+                                        kepentingan yang berdekatan.
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'ahp/footer.html' %}
+{% include 'ahp/scriptsmain.html' %}
+
+</html>

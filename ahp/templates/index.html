@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% include 'ahp/stylesmain.html' %}
+  <title>AHP</title>
+</head>
+
+<body>
+  {% include 'ahp/navbar.html' %}
+  <div class="container">
+    <section style="height: 45rem;">
+      <div class="row align-items-center">
+        <div class="col-md-6 align-middle" data-aos="fade-right">
+          <p class="text-primary display-1">Expert Survey</p>
+          <hr class="rounded-pill mt-5 mb-2" style="width: 5rem; height: 0.4rem; color: rgb(143, 173, 255);">
+          <p class="fs-4">Penilaian <i>expert</i> terhadap bobot RFM dan LRFM
+            dengan metode <i>Analytical Hierarchy Process</i>
+            untuk segementasi pelanggan
+          </p>
+          <div class="row d-flex">
+            <div class="col">
+              <a href="{%url 'weighting:index'%}" class="btn btn-lg btn-primary rounded-pill mt-5"
+            style="padding-left: 3rem; padding-right: 3rem;">Let's Start</a>
+            <a href="{%url 'index'%}#about" class="btn btn-lg btn-outline-primary rounded-pill mt-5"
+            style="padding-left: 2rem; padding-right: 2rem;">More Info</a>
+            </div>
+            
+          </div>
+          
+        </div>
+        <div class="col-md-6 d-flex justify-content-center" data-aos="fade-left">
+          <img src="{%static 'weighting/img/vector1.jpg'%}" alt="" style="width: 35rem;">
+        </div>
+      </div>
+    </section>
+  </div>
+  <section id="about" style="background-color: #F3F5FF; overflow: hidden;">
+    <div class="row align-items-center p-5">
+      <div class="col-md-6" data-aos="fade-left">
+        <img src="{%static 'weighting/img/vector2.png'%}" alt="" style="width: 35rem;">
+      </div>
+      <div class="col-md-6" data-aos="fade-right">
+        <p class="display-3 h2 mb-5">About</p>
+        <p class="fs-5">Survei ini tertujuan untuk mendapatkan bobot akhir
+          atribut RFM dan LRFM yang akan digunakan pada
+          penelitian "Clustering Pelanggan untuk Menentukan
+          Strategi Pemasaran Menggunakan Metode K-Means dan
+          TOPSIS (Studi Kasus : Toko Kerajinan X)".
+        </p>
+
+        <p class="fs-5">Responden utama adalah expert di Toko Kerajinan X,
+          dan expert lainnya dalam bidang marketing dan
+          industri kerajinan.
+        </p>
+
+      </div>
+    </div>
+
+  </section>
+  {% include 'ahp/footer.html' %}
+  {% include 'ahp/scriptsmain.html' %}
+</body>
+
+</html>

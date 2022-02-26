@@ -1,2 +1,2 @@
-web: gunicorn ahp.wsgi --log-file=-
+web: gunicorn ahp.wsgi
 release: python manage.py migrate
